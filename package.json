@@ -1,0 +1,15 @@
+{
+  "name": "videodestroyer",
+  "version": "1.0.0",
+  "description": "HELP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "artifish",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "fluent-ffmpeg": "^2.1.2"
+  }
+}
