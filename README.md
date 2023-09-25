@@ -1,5 +1,5 @@
 # VideoDestroyer
- 
+ absolutely destroy the quality of video files. infinite entertainment!
 ### inspired by butterroach
 
 ## requirements
