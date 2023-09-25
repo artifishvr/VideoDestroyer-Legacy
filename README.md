@@ -1,6 +1,5 @@
 # VideoDestroyer
- absolutely destroy the quality of video files. infinite entertainment!
-### inspired by butterroach
+absolutely destroy the quality of video files. infinite entertainment!
 
 ## requirements
 - ffmpeg
