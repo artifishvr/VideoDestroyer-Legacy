@@ -1,15 +1,19 @@
 {
   "name": "videodestroyer",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "HELP",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "pkg index.js -t node16-win-x64 -o dist/videodestroyer.exe"
   },
   "author": "artifish",
   "license": "GPL-3.0",
   "dependencies": {
     "commander": "^11.0.0",
     "fluent-ffmpeg": "^2.1.2"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
   }
 }

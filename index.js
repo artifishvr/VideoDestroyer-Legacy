@@ -1,17 +1,17 @@
 const { program } = require('commander');
 const ffmpeg = require('fluent-ffmpeg');
 
-    program
-        .requiredOption('-i, --input <file>', 'input file')
-        .requiredOption('-o, --output <file>', 'output file')
-        .option('-b, --bitrate <rate>', 'video bitrate')
-        .option('--bassboost <value>', 'video bass boost')
-        .option('-v, --volume <value>', 'video volume boost');
-    // TODO add more options
+program
+    .requiredOption('-i, --input <file>', 'input file')
+    .requiredOption('-o, --output <file>', 'output file')
+    .option('-b, --bitrate <rate>', 'video bitrate')
+    .option('--bassboost <value>', 'video bass boost')
+    .option('-v, --volume <value>', 'video volume boost');
+// TODO add more options
 
-    program.parse(process.argv);
+program.parse(process.argv);
 
-    const options = program.opts();
+const options = program.opts();
 
 console.log('Input file: ', options.input);
 console.log('Output file: ', options.output);
