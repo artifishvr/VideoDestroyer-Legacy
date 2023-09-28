@@ -3,13 +3,14 @@ const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
 
 program
-    .requiredOption('-i, --input <file>', 'input file')
-    .requiredOption('-o, --output <file>', 'output file')
-    .option('-b, --bitrate <rate>', 'video bitrate')
-    .option('--bassboost <value>', 'video bass boost')
-    .option('-v, --volume <value>', 'video volume boost')
-    .option('-f, --fps <value>', 'video framerate')
-    .option('-r, --resolution <value>', 'video resolution')
+    .requiredOption('-i, --input <file>', 'Input file (any format supported by ffmpeg)')
+    .requiredOption('-o, --output <file>', 'Output file (.mp4)')
+    .option('-b, --bitrate <rate>', 'Video bitrate', '1')
+    .option('-ab, --audiobitrate <rate>', 'Audio bitrate', '1')
+    .option('-bb', '--bassboost <amount>', 'Video bassboost', '5')
+    .option('-v, --volume <volume>', 'Video volume', '5')
+    .option('-f, --fps <fps>', 'Video framerate', '5')
+    .option('-r, --resolution <WxH>', 'Video resolution', '100x100')
 
 program.parse(process.argv);
 
@@ -20,16 +21,16 @@ fs.mkdirSync("./temp");
 const mainCompression = ffmpeg(options.input)
     .outputOptions([
         '-preset veryfast',
-        `-minrate ${options.bitrate || 1}`,
-        `-maxrate ${options.bitrate || 1}`,
-        `-bufsize ${options.bitrate || 1}`,
+        `-minrate ${options.bitrate}`,
+        `-maxrate ${options.bitrate}`,
+        `-bufsize ${options.bitrate}`,
     ])
-    .videoBitrate(options.bitrate || 1)
-    .audioFilter(`bass=g=${options.bassboost || '5'}`)
-    .audioFilter(`volume=${options.volume || '5'}dB`)
-    .audioBitrate('1')
-    .fps(options.fps || 5)
-    .size(options.resolution || '100x100')
+    .videoBitrate(options.bitrate)
+    .audioFilter(`bass=g=${options.bassboost}`)
+    .audioFilter(`volume=${options.volume}dB`)
+    .audioBitrate(options.audiobitrate)
+    .fps(options.fps)
+    .size(options.resolution)
     .format('webm')
     .save('./temp/temp.webm');
 
