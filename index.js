@@ -1,5 +1,6 @@
 const { program } = require('commander');
 const ffmpeg = require('fluent-ffmpeg');
+const fs = require('fs');
 
 program
     .requiredOption('-i, --input <file>', 'input file')
@@ -14,11 +15,9 @@ program.parse(process.argv);
 
 const options = program.opts();
 
-console.log('Input file: ', options.input);
-console.log('Output file: ', options.output);
-
-
-const command = ffmpeg(options.input)
+console.log("Starting compression...\n")
+fs.mkdirSync("./temp");
+const mainCompression = ffmpeg(options.input)
     .outputOptions([
         '-preset veryfast',
         `-minrate ${options.bitrate || 1}`,
@@ -31,27 +30,29 @@ const command = ffmpeg(options.input)
     .audioBitrate('1')
     .fps(options.fps || 5)
     .size(options.resolution || '100x100')
-    .output(options.output);
+    .format('webm')
+    .save('./temp/temp.webm');
 
-const command2 = ffmpeg(options.output)
+
+mainCompression.on('end', () => {
+    console.log('Main compression finished, re-encoding...\n');
+    finishCompress.run();
+});
+
+mainCompression.on('error', (err) => {
+    console.error("Error in mainCompression:" + err);
+});
+
+const finishCompress = ffmpeg("./temp/temp.webm")
     .size('1920x1080')
     .videoBitrate(1)
-    .output(options.output + "2.mp4");
+    .fps(30)
+    .output(options.output);
 
-command.on('end', () => {
-    console.log('Finished processing, doing it again');
-    command2.run();
+finishCompress.on('end', () => {
+    console.log(`Finished compressing! Outputted to ${options.output}`);
+    fs.rmSync("./temp", { recursive: true, force: true });
 });
-
-command.on('error', (err) => {
-    console.error(err);
-});
-
-command.run();
-
-command2.on('end', () => {
-    console.log('Finished processing');
-});
-command2.on('error', (err) => {
-    console.error(err);
+finishCompress.on('error', (err) => {
+    console.error("Error in finishCompress:" + err);
 });
