@@ -7,7 +7,7 @@ program
     .requiredOption('-o, --output <file>', 'Output file (.mp4)')
     .option('-b, --bitrate <rate>', 'Video bitrate', '1')
     .option('-ab, --audiobitrate <rate>', 'Audio bitrate', '1')
-    .option('-bb', '--bassboost <amount>', 'Video bassboost', '5')
+    .option('-bb, --bassboost <amount>', 'Video bassboost', '5')
     .option('-v, --volume <volume>', 'Video volume', '5')
     .option('-f, --fps <fps>', 'Video framerate', '5')
     .option('-r, --resolution <WxH>', 'Video resolution', '100x100')
@@ -17,7 +17,7 @@ program.parse(process.argv);
 const options = program.opts();
 
 console.log("Starting compression...\n")
-fs.mkdirSync("./temp");
+if (!fs.existsSync("./temp")) fs.mkdirSync("./temp");
 const mainCompression = ffmpeg(options.input)
     .outputOptions([
         '-preset veryfast',
