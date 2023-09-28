@@ -4,7 +4,7 @@
   "description": "absolutely destroy the quality of video files",
   "main": "index.js",
   "scripts": {
-    "build": "pkg index.js -t node16-win-x64 -o dist/videodestroyer.exe"
+    "build": "pkg index.js --out-path dist"
   },
   "author": "artifish",
   "license": "GPL-3.0",
