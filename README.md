@@ -1,19 +1,16 @@
+<div align="center">
 <img 
-    style="display: block; 
-           margin-left: auto;
-           margin-right: auto;
-           width: 128px"
+    width="128" height="128"
     src="icon.png" 
     alt=":3 icon">
 </img>
+    </div>
 <h1 align="center">VideoDestroyer</h1>
 <p align="center">absolutely destroy the quality of video files in mere seconds</p>
 
 ## Example Video
 
-<video width="640" height="360" controls>
-  <source src="example.mp4" type="video/mp4">
-</video>
+https://github.com/artificialbutter/VideoDestroyer/assets/59352535/abc03f45-8966-44bd-a5ca-185a17589d04
 
 ([original video](https://youtu.be/MyoOuhsgB04))
 
