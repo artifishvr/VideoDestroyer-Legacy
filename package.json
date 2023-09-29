@@ -4,7 +4,7 @@
   "description": "absolutely destroy the quality of video files",
   "main": "index.js",
   "scripts": {
-    "build": "pkg index.js --out-path dist"
+    "build": "pkg index.js --out-path dist -t node16-win,node16-linux,node16-macos"
   },
   "author": "artifish",
   "license": "GPL-3.0",
