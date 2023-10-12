@@ -32,7 +32,11 @@ const mainCompression = ffmpeg(options.input)
     .fps(options.fps)
     .size(options.resolution)
     .format('webm')
-    .save('./temp/temp.webm');
+    .save('./temp/temp.webm')
+    .on('progress', function(progress) {
+        process.stdout.write(`Compressing...\r`);
+        process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
+    });
 
 
 mainCompression.on('end', () => {
@@ -48,10 +52,13 @@ const finishCompress = ffmpeg("./temp/temp.webm")
     .size('1920x1080')
     .videoBitrate(1)
     .fps(30)
-    .output(options.output);
+    .output(options.output)
+    .on('progress', function(progress) {
+        process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
+    });
 
 finishCompress.on('end', () => {
-    console.log(`Finished compressing! Outputted to ${options.output}`);
+    console.log(`Finished compressing! Saved to ${options.output}`);
     fs.rmSync("./temp", { recursive: true, force: true });
 });
 finishCompress.on('error', (err) => {
