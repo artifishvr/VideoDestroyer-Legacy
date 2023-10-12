@@ -16,7 +16,7 @@ program.parse(process.argv);
 
 const options = program.opts();
 
-console.log("Starting compression...\n")
+console.log("Compressing...\n")
 if (!fs.existsSync("./temp")) fs.mkdirSync("./temp");
 const mainCompression = ffmpeg(options.input)
     .outputOptions([
@@ -32,15 +32,14 @@ const mainCompression = ffmpeg(options.input)
     .fps(options.fps)
     .size(options.resolution)
     .format('webm')
-    .save('./temp/temp.webm')
-    .on('progress', function(progress) {
-        process.stdout.write(`Compressing...\r`);
-        process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
-    });
+    .save('./temp/temp.webm');
 
+mainCompression.on('progress', (progress) => {
+    process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
+});
 
 mainCompression.on('end', () => {
-    console.log('Main compression finished, re-encoding...\n');
+    console.log('\rMain compression finished! Re-encoding...\n');
     finishCompress.run();
 });
 
@@ -52,13 +51,14 @@ const finishCompress = ffmpeg("./temp/temp.webm")
     .size('1920x1080')
     .videoBitrate(1)
     .fps(30)
-    .output(options.output)
-    .on('progress', function(progress) {
-        process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
-    });
+    .output(options.output);
+
+finishCompress.on('progress', (progress) => {
+    process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
+});
 
 finishCompress.on('end', () => {
-    console.log(`Finished compressing! Saved to ${options.output}`);
+    console.log(`\rFinished compressing! Saved to ${options.output}`);
     fs.rmSync("./temp", { recursive: true, force: true });
 });
 finishCompress.on('error', (err) => {
