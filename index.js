@@ -1,6 +1,9 @@
 const { program } = require('commander');
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
+const SnowflakeCodon = require('snowflake-codon');
+
+const snowflakeGenerator = new SnowflakeCodon();
 
 program
     .requiredOption('-i, --input <file>', 'Input file (any format supported by ffmpeg)')
@@ -18,36 +21,10 @@ const options = program.opts();
 
 console.log("Compressing...\n")
 if (!fs.existsSync("./temp")) fs.mkdirSync("./temp");
-const mainCompression = ffmpeg(options.input)
-    .outputOptions([
-        '-preset veryfast',
-        `-minrate ${options.bitrate}`,
-        `-maxrate ${options.bitrate}`,
-        `-bufsize ${options.bitrate}`,
-    ])
-    .videoBitrate(options.bitrate)
-    .audioFilter(`bass=g=${options.bassboost}`)
-    .audioFilter(`volume=${options.volume}dB`)
-    .audioBitrate(options.audiobitrate)
-    .fps(options.fps)
-    .size(options.resolution)
-    .format('webm')
-    .save('./temp/temp.webm');
 
-mainCompression.on('progress', (progress) => {
-    process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
-});
+let snowflake = snowflakeGenerator.nextId();
 
-mainCompression.on('end', () => {
-    console.log('\rMain compression finished! Re-encoding...\n');
-    finishCompress.run();
-});
-
-mainCompression.on('error', (err) => {
-    console.error("Error in mainCompression:" + err);
-});
-
-const finishCompress = ffmpeg("./temp/temp.webm")
+const finishCompress = ffmpeg(`./temp/${snowflake}.webm`)
     .size('1920x1080')
     .videoBitrate(1)
     .fps(30)
@@ -64,3 +41,41 @@ finishCompress.on('end', () => {
 finishCompress.on('error', (err) => {
     console.error("Error in finishCompress:" + err);
 });
+
+(async () => {
+    await compressvideo(snowflake);
+    finishCompress.run();
+
+    function compressvideo(snowflake) {
+        return new Promise((resolve, reject) => {
+            const mainCompression = ffmpeg(options.input)
+                .outputOptions([
+                    '-preset veryfast',
+                    `-minrate ${options.bitrate}`,
+                    `-maxrate ${options.bitrate}`,
+                    `-bufsize ${options.bitrate}`,
+                ])
+                .videoBitrate(options.bitrate)
+                .audioFilter(`bass=g=${options.bassboost}`)
+                .audioFilter(`volume=${options.volume}dB`)
+                .audioBitrate(options.audiobitrate)
+                .fps(options.fps)
+                .size(options.resolution)
+                .format('webm')
+                .save(`./temp/${snowflake}.webm`);
+
+            mainCompression.on('progress', (progress) => {
+                process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
+            });
+
+            mainCompression.on('error', (err) => {
+                reject(err);
+            });
+
+            mainCompression.on('end', () => {
+                resolve();
+            });
+        });
+    }
+
+})();
