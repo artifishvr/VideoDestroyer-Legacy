@@ -1,6 +1,6 @@
 {
   "name": "videodestroyer",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "absolutely destroy the quality of video files",
   "main": "index.js",
   "scripts": {

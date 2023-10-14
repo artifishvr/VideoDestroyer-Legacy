@@ -7,6 +7,8 @@
     </div>
 <h1 align="center">VideoDestroyer</h1>
 <p align="center">absolutely destroy the quality of video files in mere seconds</p>
+<p align="center"><i>"it's a miracle this functions at all"</i> <br>-anyone that sees the code</p>
+
 
 ## Example Video
 
