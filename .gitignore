@@ -126,3 +126,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 .DS_Store
+
+# it just makes it a lot easier for me
+input.mp4
