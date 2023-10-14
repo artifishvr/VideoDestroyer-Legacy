@@ -1,8 +1,10 @@
 const { program } = require('commander');
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
+const pjson = require('./package.json');
 
 program
+    .version(pjson.version)
     .requiredOption('-i, --input <file>', 'Input file (any format supported by ffmpeg)')
     .requiredOption('-o, --output <file>', 'Output file (.mp4)')
     .option('-l, --layers <count>', '# of compression layers', '1')
@@ -73,8 +75,8 @@ function isEven(n) {
                 .fps(options.fps)
                 .size(resOverride || options.resolution)
                 .format('webm')
-                .save(`./temp/${snowflake}-comp.webm`);
-            snowflake = `${snowflake}-comp`
+                .save(`./temp/${snowflake}-.webm`);
+            snowflake = `${snowflake}-`
 
             mainCompression.on('error', (err) => {
                 reject(err);
