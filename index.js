@@ -8,6 +8,7 @@ const snowflakeGenerator = new SnowflakeCodon();
 program
     .requiredOption('-i, --input <file>', 'Input file (any format supported by ffmpeg)')
     .requiredOption('-o, --output <file>', 'Output file (.mp4)')
+    .option('-l, --layers <count>', '# of compression layers', '1')
     .option('-b, --bitrate <rate>', 'Video bitrate', '1')
     .option('-ab, --audiobitrate <rate>', 'Audio bitrate', '1')
     .option('-bb, --bassboost <amount>', 'Video bassboost', '5')
@@ -22,29 +23,32 @@ const options = program.opts();
 console.log("Compressing...\n")
 if (!fs.existsSync("./temp")) fs.mkdirSync("./temp");
 
-let snowflake = snowflakeGenerator.nextId();
-
-const finishCompress = ffmpeg(`./temp/${snowflake}.webm`)
-    .size('1920x1080')
-    .videoBitrate(1)
-    .fps(30)
-    .output(options.output);
-
-finishCompress.on('progress', (progress) => {
-    process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
-});
-
-finishCompress.on('end', () => {
-    console.log(`\rFinished compressing! Saved to ${options.output}`);
-    fs.rmSync("./temp", { recursive: true, force: true });
-});
-finishCompress.on('error', (err) => {
-    console.error("Error in finishCompress:" + err);
-});
-
 (async () => {
-    await compressvideo(snowflake);
-    finishCompress.run();
+    let snowflake;
+
+    for (let i = 0; i < options.layers; i++) {
+        snowflake = snowflakeGenerator.nextId();
+        await compressvideo(snowflake);
+        console.log(`Finished layer ${i + 1}/${options.layers}...\n`);
+    }
+
+    const finishCompress = ffmpeg(`./temp/${snowflake}.webm`)
+        .size('1920x1080')
+        .videoBitrate(1)
+        .fps(30)
+        .save(options.output);
+
+    finishCompress.on('start', () => {
+        console.log(`Started final re-encode`);
+    });
+
+    finishCompress.on('end', () => {
+        console.log(`\rFinished compressing! Saved to ${options.output}`);
+        fs.rmSync("./temp", { recursive: true, force: true });
+    });
+    finishCompress.on('error', (err) => {
+        console.error("Error in finishCompress:" + err);
+    });
 
     function compressvideo(snowflake) {
         return new Promise((resolve, reject) => {
@@ -63,10 +67,6 @@ finishCompress.on('error', (err) => {
                 .size(options.resolution)
                 .format('webm')
                 .save(`./temp/${snowflake}.webm`);
-
-            mainCompression.on('progress', (progress) => {
-                process.stdout.write(`${Math.floor(progress.percent)}% done | ${progress.currentFps} FPS        \r`);
-            });
 
             mainCompression.on('error', (err) => {
                 reject(err);
