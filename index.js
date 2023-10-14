@@ -1,9 +1,6 @@
 const { program } = require('commander');
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
-const SnowflakeCodon = require('snowflake-codon');
-
-const snowflakeGenerator = new SnowflakeCodon();
 
 program
     .requiredOption('-i, --input <file>', 'Input file (any format supported by ffmpeg)')

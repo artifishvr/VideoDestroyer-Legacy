@@ -10,8 +10,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "commander": "^11.0.0",
-    "fluent-ffmpeg": "^2.1.2",
-    "snowflake-codon": "^4.1.1"
+    "fluent-ffmpeg": "^2.1.2"
   },
   "devDependencies": {
     "pkg": "^5.8.1"
