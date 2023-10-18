@@ -4,7 +4,7 @@ const fs = require('fs');
 const pjson = require('./package.json');
 
 program
-    .name('VideoDestroyer')
+    .version(pjson.version)
     .requiredOption('-i, --input <file>', 'Input file (any format supported by ffmpeg)')
     .requiredOption('-o, --output <file>', 'Output file (.mp4)')
     .option('-l, --layers <count>', '# of compression layers', '1')
@@ -14,9 +14,6 @@ program
     .option('-v, --volume <volume>', 'Video volume', '5')
     .option('-f, --fps <fps>', 'Video framerate', '5')
     .option('-r, --resolution <WxH>', 'Video resolution (useless setting)', '100x100')
-    .version(pjson.version)
-
-if (program.args.length === 0) program.help();
 
 program.parse(process.argv);
 
