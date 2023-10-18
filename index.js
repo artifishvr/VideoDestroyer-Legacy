@@ -1,5 +1,5 @@
 import { program } from 'npm:commander';
-import pjson  from './package.json' with { type: "json" };
+import pjson from './package.json' with { type: "json" };
 import ffmpeg from 'npm:fluent-ffmpeg';
 import fs from 'node:fs';
 
