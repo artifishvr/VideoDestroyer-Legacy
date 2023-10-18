@@ -1,7 +1,7 @@
-const { program } = require('commander');
-const ffmpeg = require('fluent-ffmpeg');
-const fs = require('fs');
-const pjson = require('./package.json');
+import { program } from 'npm:commander';
+import pjson  from './package.json' with { type: "json" };
+import ffmpeg from 'npm:fluent-ffmpeg';
+import fs from 'node:fs';
 
 program
     .name('VideoDestroyer')
