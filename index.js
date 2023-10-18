@@ -35,9 +35,9 @@ function isEven(n) {
 
         if (i > 0 && isEven(i)) resOverride = '100x100';
         if (i > 0 && !isEven(i)) resOverride = '1080x720';
-        if (i < 1) await compressvideo(options.input, resOverride);
+        if (i < 1) await compressvideo(options.input, resOverride, i);
 
-        if (i > 0) await compressvideo(`./temp/${snowflake}.webm`, resOverride);
+        if (i > 0) await compressvideo(`./temp/${snowflake}.webm`, resOverride, i);
         console.log(`Finished layer ${i + 1}/${options.layers}...`);
     }
 
@@ -59,7 +59,7 @@ function isEven(n) {
         console.error("Error in finishCompress:" + err);
     });
 
-    function compressvideo(compressPath, resOverride) {
+    function compressvideo(compressPath, resOverride, index) {
         return new Promise((resolve, reject) => {
             const mainCompression = ffmpeg(compressPath)
                 .outputOptions([
@@ -75,8 +75,8 @@ function isEven(n) {
                 .fps(options.fps)
                 .size(resOverride || options.resolution)
                 .format('webm')
-                .save(`./temp/${snowflake}-.webm`);
-            snowflake = `${snowflake}-`
+                .save(`./temp/${index}.webm`);
+            snowflake = `${index}`
 
             mainCompression.on('error', (err) => {
                 reject(err);
