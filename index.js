@@ -14,9 +14,8 @@ program
     .option('-v, --volume <volume>', 'Video volume', '5')
     .option('-f, --fps <fps>', 'Video framerate', '5')
     .option('-r, --resolution <WxH>', 'Video resolution (useless setting)', '100x100')
-    .version(pjson.version)
-
-if (program.args.length === 0) program.help();
+    .showHelpAfterError('(add --help for additional information)')
+    .version(pjson.version);
 
 program.parse(process.argv);
 
