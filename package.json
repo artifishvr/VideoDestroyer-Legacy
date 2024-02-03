@@ -9,7 +9,7 @@
   "author": "artifish",
   "license": "GPL-3.0",
   "dependencies": {
-    "commander": "^11.0.0",
+    "commander": "^12.0.0",
     "fluent-ffmpeg": "^2.1.2"
   },
   "devDependencies": {
