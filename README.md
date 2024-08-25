@@ -1,3 +1,5 @@
+# This repository has been superseded by [VideoDestroyer](https://github.com/artifishvr/VideoDestroyer), the same idea but only requires a web browser. Check it out!
+
 <div align="center">
 <img 
     width="128" height="128"
@@ -12,7 +14,7 @@
 
 ## Example Video
 
-https://github.com/artificialbutter/VideoDestroyer/assets/59352535/abc03f45-8966-44bd-a5ca-185a17589d04
+https://github.com/artifishvr/VideoDestroyer/assets/59352535/abc03f45-8966-44bd-a5ca-185a17589d04
 
 ([original video](https://youtu.be/MyoOuhsgB04))
 
